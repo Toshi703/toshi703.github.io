@@ -65,7 +65,7 @@
       return `<article class="upgrade-card"><span class="upgrade-icon" aria-hidden="true">${u.icon}</span><div class="upgrade-info"><strong>${u.name}</strong><p>${u.desc}</p><span class="upgrade-meta">+${format(u.baseRate * (1 + state.prestige * .1))} / sec <span class="upgrade-level">NIV. ${owned}</span></span></div><button class="buy-button" type="button" data-buy="${u.id}" ${state.credits < price ? 'disabled' : ''}>ACHETER<small>${format(price)} ◈</small></button></article>`;
     }).join('');
   }
-  function prestigeGain() { return Math.max(0, Math.floor(Math.sqrt(state.totalEarned / PRESTIGE_REQUIREMENT)) - state.prestige); }
+  function prestigeGain() { return Math.max(0, Math.floor(Math.sqrt(state.totalEarned / PRESTIGE_REQUIREMENT))); }
   function rank() {
     const names = ['Opérateur', 'Codeur', 'Architecte', 'Netrunner', 'Magnat', 'Légende'];
     return names[Math.min(Math.floor(state.prestige / 2), names.length - 1)];
