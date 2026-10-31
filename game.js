@@ -140,4 +140,12 @@
   document.addEventListener('visibilitychange', () => { if (document.hidden) save(); else lastTick = Date.now(); });
   window.addEventListener('beforeunload', save);
   updateUI();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register(new URL('sw.js', document.baseURI))
+        .then(() => console.info('Neon Miner service worker registered.'))
+        .catch(error => console.warn('Neon Miner service worker registration failed:', error));
+    }, { once: true });
+  }
 })();
