@@ -1,0 +1,4 @@
+# ads.txt template — replace placeholders with your real ad-network seller details.
+# One record per line, format: advertising-system-domain, publisher-account-id, DIRECT|RESELLER, certification-authority-id
+# Example only (do not publish until you have an account and the correct publisher ID):
+# example.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

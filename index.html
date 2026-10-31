@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b12">
+  <meta name="description" content="Mine des crédits, automatise ton empire numérique et recommence plus puissant dans Neon Miner.">
+  <title>Neon Miner — bâtis ton empire numérique</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="game.js"></script>
+</head>
+<body class="min-h-screen">
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Neon Miner, accueil"><span class="brand-mark">N</span><span>NEON<span class="brand-muted">MINER</span></span></a>
+      <div class="top-status"><span class="pulse-dot"></span><span>RÉSEAU ACTIF</span><span class="status-divider"></span><span id="saveStatus">SAUVEGARDE AUTO</span></div>
+      <button class="icon-button" id="soundToggle" type="button" aria-label="Activer les sons" title="Sons (désactivés par défaut)">♪<span class="sr-only">Sons</span></button>
+    </header>
+
+    <main id="top">
+      <section class="hero-row">
+        <div><p class="eyebrow"><span class="eyebrow-line"></span> PROTOCOLE D'ASCENSION <span id="prestigeLevel" class="level-chip">NIVEAU 0</span></p>
+          <h1>Le réseau n'attend<br><span>que toi.</span></h1>
+          <p class="hero-copy">Transforme une étincelle de code en empire numérique.</p></div>
+        <div class="rank-card"><span class="rank-icon">⌁</span><div><span class="micro-label">NŒUD DE RÉSEAU</span><strong id="rankName">Opérateur</strong></div><span class="rank-dot"></span></div>
+      </section>
+
+      <section class="resource-panel" aria-label="Ressources et action principale">
+        <div class="resource-top"><div class="micro-label"><span class="resource-symbol">◈</span> CRÉDITS NUMÉRIQUES</div><div class="multiplier">MULTIPLICATEUR <b id="multiplier">×1</b></div></div>
+        <div class="balance" id="credits" aria-live="polite">0</div>
+        <div class="income-line"><span><i class="income-dot"></i> Génération auto</span><strong>+<span id="perSecond">0</span><small> / SEC</small></strong></div>
+        <div class="progress-track"><div class="progress-fill" id="levelProgress"></div></div>
+        <div class="progress-label"><span id="progressText">Prochain palier</span><span id="progressPct">0%</span></div>
+        <button id="mineButton" class="mine-button" type="button" aria-label="Miner des crédits"><span class="mine-spark">✳</span><span class="mine-label">MINER DES CRÉDITS</span><span class="mine-hint">Touchez pour générer <b id="clickValue">+1</b></span><span class="button-scan"></span></button>
+        <div class="tap-stat"><span>SESSION DE MINAGE</span><span><b id="clicks">0</b> IMPULSIONS</span></div>
+      </section>
+
+      <div class="section-head"><div><p class="eyebrow"><span class="eyebrow-line"></span> DÉVELOPPEMENT</p><h2>Optimise ta ferme</h2></div><span class="live-tag"><span></span> EN DIRECT</span></div>
+      <section class="upgrade-list" id="upgradeList" aria-label="Améliorations"></section>
+
+      <section class="bottom-grid">
+        <article class="utility-card">
+          <div class="card-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> RECOMPENSES</p><h3>Boost temporaire</h3></div><span class="utility-icon">ϟ</span></div>
+          <p class="utility-copy">Double tes gains pendant 30 secondes. L'emplacement publicitaire est inactif en mode démo.</p>
+          <button id="boostButton" class="secondary-button" type="button">▶ <span>VOIR UNE PUB RÉCOMPENSÉE</span></button>
+          <p class="disclaimer">Démo : aucune publicité réelle n'est diffusée.</p>
+        </article>
+        <article class="utility-card prestige-card">
+          <div class="card-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> RESET DU SYSTÈME</p><h3>Reboot quantique</h3></div><span class="utility-icon">⟳</span></div>
+          <p class="utility-copy">Repars de zéro et garde tes fragments quantiques pour amplifier ta prochaine ascension.</p>
+          <div class="prestige-reward"><span>GAIN ESTIMÉ</span><strong>+<span id="prestigeGain">0</span> <small>FRAGMENTS</small></strong></div>
+          <button id="prestigeButton" class="secondary-button prestige-button" type="button" disabled>⟳ <span>REBOOTER LE RÉSEAU</span></button>
+          <p class="disclaimer" id="prestigeHint">Disponible à partir de 1 million de crédits.</p>
+        </article>
+      </section>
+
+      <section class="ad-slot" aria-label="Emplacement publicitaire"><span class="ad-spark">✳</span><span>EMPLACEMENT PUBLICITAIRE</span><span class="ad-rule"></span><small>Votre annonce pourrait apparaître ici</small></section>
+      <footer class="footer"><span>NEON MINER <span class="footer-dim">/ V 1.0</span></span><span>PROGRÈS SAUVEGARDÉ LOCALEMENT <button id="resetButton" class="reset-link" type="button">RÉINITIALISER</button></span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="boostModal" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><span class="modal-icon">ϟ</span><p class="eyebrow">CONTENU SPONSORISÉ</p><h2 id="modalTitle">Emplacement publicitaire prêt</h2><p>Branchez un fournisseur de publicités récompensées pour activer ce bonus. En mode démo, la pub ne sera pas simulée.</p><button id="closeModal" class="secondary-button" type="button">COMPRIS</button></div></div>
+</body>
+</html>
