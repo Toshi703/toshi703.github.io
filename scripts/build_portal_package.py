@@ -28,6 +28,9 @@ html = re.sub(r"\s*<script src=\"https://cdn\.tailwindcss\.com\"></script>", "",
 html = re.sub(r"\s*<link rel=\"preconnect\" href=\"https://fonts\.(?:googleapis|gstatic)\.com\"[^>]*>", "", html)
 html = re.sub(r"\s*<link href=\"https://fonts\.googleapis\.com/[^\"]+\"[^>]*>", "", html)
 html = html.replace('<body class="min-h-screen">', '<body>')
+html = re.sub(r'<article class="utility-card">.*?id="boostButton".*?</article>', "", html, flags=re.S)
+html = re.sub(r'\s*<section class="ad-slot"[^>]*>.*?</section>', "", html, flags=re.S)
+html = re.sub(r'\s*<div id="boostModal".*?</div></div>', "", html, flags=re.S)
 
 # Strip site-specific automatic service-worker registration from this clean listing build.
 js = re.sub(
@@ -35,15 +38,22 @@ js = re.sub(
     "\n",
     js,
 )
+js = re.sub(
+    r"\n\s*\$\('boostButton'\)\.addEventListener\('click'.*?\n\s*document\.addEventListener\('keydown', event => \{ if \(event\.key === 'Escape'\) \$\('boostModal'\)\.hidden = true; \}\);\n",
+    "\n",
+    js,
+    flags=re.S,
+)
 css = re.sub(r"^@import url\([^\n]+\);\s*", "", css)
 css = "body{min-height:100vh}\n" + css
+css = css.replace(".bottom-grid{display:grid;grid-template-columns:1fr 1fr;", ".bottom-grid{display:grid;grid-template-columns:1fr;")
 
 if re.search(r"https?://", html + css + js):
     raise SystemExit("Unexpected external URL remains in clean package source; review before publishing.")
 if "serviceWorker.register" in js or "nap5k.com" in html or "12167433" in html:
     raise SystemExit("Live advertising or service-worker registration remains in clean package.")
 
-readme = """Neon Miner — HTML5 portal package\n\nThis is a clean, ad-free build for portal review. It excludes Monetag, remote font/CDN calls, and the site's service worker. The rewarded-ad button remains a clearly labelled demo placeholder; it does not grant a reward or show an ad. No CrazyGames, Poki, Newgrounds, or GameDistribution SDK has been added.\n\nEntry point: index.html (archive root).\nLanguage: French.\nControls: click/tap.\nProgress: local browser storage; no account or cross-device sync.\n"""
+readme = """Neon Miner — HTML5 portal package\n\nThis is a clean, ad-free build for portal review. It excludes Monetag, visible ad placeholders, remote font/CDN calls, and the site's service worker. No CrazyGames, Poki, Newgrounds, or GameDistribution SDK has been added.\n\nEntry point: index.html (archive root).\nLanguage: French.\nControls: click/tap.\nProgress: local browser storage; no account or cross-device sync.\n"""
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(OUTPUT, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
     archive.writestr("index.html", html)
