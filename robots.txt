@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://toshi703.github.io/sitemap.xml

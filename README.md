@@ -16,14 +16,21 @@ Cliquez sur **Miner des crédits** pour obtenir une ressource immédiate. Achete
 
 La progression est sauvegardée dans le stockage local du navigateur toutes les cinq secondes, à la fermeture de l’onglet et lors des changements d’onglet. Les sauvegardes restent sur cet appareil/navigateur et ne sont pas synchronisées entre appareils.
 
-## Publicité
+## Publicité et distributions
 
-Les emplacements banner et rewarded sont des placeholders; aucune publicité réelle n’est téléchargée ni récompense simulée. Un fournisseur compatible devra être intégré avant une monétisation réelle. `ads.txt` est un modèle : remplacez-le avec les valeurs vérifiées fournies par votre réseau publicitaire; ne laissez pas l’exemple fictif en production.
+Le site direct charge le tag Monetag In-Page Push (zone `12167433`). Le bouton de boost « publicité récompensée » reste un placeholder : aucune récompense n’est accordée après visionnage d’une pub. `ads.txt` est encore un modèle, pas une entrée d’éditeur Monetag vérifiée.
+
+`sw.js` est enregistré sur le site direct et importe le script externe `https://3nbf4.com/act/files/service-worker.min.js?r=sw`; cette dépendance n’a pas été auditée. Pour les portails qui refusent les publicités tierces ou les requêtes externes, construisez une archive propre avec `python3 scripts/build_portal_package.py`. Cette archive retire Monetag, les CDN/polices externes et le service worker; elle n’inclut pas le SDK d’un portail particulier.
+
+Les métadonnées de partage, le JSON-LD, `robots.txt` et `sitemap.xml` améliorent la description technique du site, mais ne garantissent ni indexation ni résultats enrichis.
 
 ## Fichiers
 
 - `index.html` — structure de page et composants.
 - `styles.css` — thème, responsive design et animations.
 - `game.js` — boucle de jeu, améliorations, prestige et persistance.
-- `sw.js` — service worker configuré et enregistré par le jeu.
+- `og-image.jpg` — visuel optimisé pour les cartes de partage.
+- `robots.txt` et `sitemap.xml` — fichiers simples pour l’exploration du site.
+- `sw.js` — service worker du site direct; importe un script tiers.
 - `ads.txt` — modèle à compléter si un réseau publicitaire est utilisé.
+- `scripts/build_portal_package.py` — fabrique le ZIP propre pour portails compatibles; sans SDK portail.
