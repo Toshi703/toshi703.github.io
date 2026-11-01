@@ -8,21 +8,7 @@ Ouvrez `index.html` dans un navigateur récent connecté à Internet (le CDN Tai
 
 ## Publier gratuitement sur GitHub Pages
 
-1. Créez un dépôt GitHub **public** et envoyez-y le contenu de ce dossier (le fichier `index.html` doit se trouver à la racine du dépôt).
-2. Dans le dépôt, ouvrez **Settings → Pages**.
-3. Sous **Build and deployment**, choisissez **Deploy from a branch**, puis la branche `main` et le dossier `/(root)`, et cliquez sur **Save**.
-4. Après le déploiement, l’adresse du jeu apparaît sur cette même page. Elle est généralement `https://VOTRE-NOM.github.io/NOM-DU-DEPOT/`.
-
-Avec GitHub CLI déjà authentifié, le dépôt peut aussi être créé et publié depuis ce dossier :
-
-```sh
-git init
-git add .
-git commit -m "Add Neon Miner idle game"
-gh repo create neon-miner --public --source=. --remote=origin --push
-```
-
-Pages peut être activé dans **Settings → Pages** comme indiqué plus haut. Selon les autorisations du jeton GitHub, sa configuration par API/CLI peut être limitée.
+Le dépôt public de ce projet est `Toshi703/toshi703.github.io`. Pour publier le site, ouvrez **Settings → Pages** et choisissez sous **Build and deployment** la branche `main` et le dossier `/(root)`, puis cliquez sur **Save**. L’adresse du site utilisateur est [https://toshi703.github.io/](https://toshi703.github.io/).
 
 ## Jouabilité
 
@@ -39,4 +25,5 @@ Les emplacements banner et rewarded sont des placeholders; aucune publicité ré
 - `index.html` — structure de page et composants.
 - `styles.css` — thème, responsive design et animations.
 - `game.js` — boucle de jeu, améliorations, prestige et persistance.
+- `sw.js` — service worker configuré et enregistré par le jeu.
 - `ads.txt` — modèle à compléter si un réseau publicitaire est utilisé.
