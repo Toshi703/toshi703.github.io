@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build an ad-free, offline-friendly HTML5 ZIP for portals that allow it.
+"""Build a clean, offline-friendly HTML5 ZIP for compatible game portals.
 
-This package deliberately excludes the live site's Monetag verification/tag,
-external fonts/CDNs, and service worker. It does not add any portal SDK.
+This package excludes site-specific ad tags, external CDN/font requests, and the
+site service worker. It deliberately does not add a portal SDK.
 Usage: python3 scripts/build_portal_package.py [output.zip]
 """
 from pathlib import Path
@@ -18,12 +18,16 @@ html = (ROOT / "index.html").read_text(encoding="utf-8")
 css = (ROOT / "styles.css").read_text(encoding="utf-8")
 js = (ROOT / "game.js").read_text(encoding="utf-8")
 
-# The listing build must not send traffic to Monetag or inherit the live site's canonical URL.
+# Remove website identity and third-party ad integrations from portal builds.
 html = re.sub(r"\s*<meta name=\"monetag\"[^>]*>", "", html)
 html = re.sub(r"\s*<link rel=\"canonical\"[^>]*>", "", html)
 html = re.sub(r"\s*<meta (?:property=\"og:[^\"]+\"|name=\"twitter:[^\"]+\")[^>]*>", "", html)
 html = re.sub(r"\s*<script type=\"application/ld\+json\">.*?</script>", "", html, flags=re.S)
 html = re.sub(r"\s*<script>\(function\(s\)\{s\.dataset\.zone='[^']+'.*?</script>", "", html, flags=re.S)
+html = html.replace(
+    '  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9479603502419364"\n     crossorigin="anonymous"></script>\n',
+    "",
+)
 html = re.sub(r"\s*<script src=\"https://cdn\.tailwindcss\.com\"></script>", "", html)
 html = re.sub(r"\s*<link rel=\"preconnect\" href=\"https://fonts\.(?:googleapis|gstatic)\.com\"[^>]*>", "", html)
 html = re.sub(r"\s*<link href=\"https://fonts\.googleapis\.com/[^\"]+\"[^>]*>", "", html)
@@ -32,28 +36,43 @@ html = re.sub(r'<article class="utility-card">.*?id="boostButton".*?</article>',
 html = re.sub(r'\s*<section class="ad-slot"[^>]*>.*?</section>', "", html, flags=re.S)
 html = re.sub(r'\s*<div id="boostModal".*?</div></div>', "", html, flags=re.S)
 
-# Strip site-specific automatic service-worker registration from this clean listing build.
+# Remove the site's service worker registration and demo-only rewarded-ad wiring.
 js = re.sub(
-    r"\n\s*if \('serviceWorker' in navigator\) \{\n\s*window\.addEventListener\('load', \(\) => \{\n\s*navigator\.serviceWorker\.register\(new URL\('sw\.js', document\.baseURI\)\)\n\s*\.then\(\(\) => console\.info\('Neon Miner service worker registered\.'\)\)\n\s*\.catch\(error => console\.warn\('Neon Miner service worker registration failed:', error\)\);\n\s*\}, \{ once: true \}\);\n\s*\}\n",
-    "\n",
-    js,
-)
-js = re.sub(
-    r"\n\s*\$\('boostButton'\)\.addEventListener\('click'.*?\n\s*document\.addEventListener\('keydown', event => \{ if \(event\.key === 'Escape'\) \$\('boostModal'\)\.hidden = true; \}\);\n",
+    r"\n  if \('serviceWorker' in navigator\) \{.*?\n  \}\n",
     "\n",
     js,
     flags=re.S,
 )
+boost_wiring = """  $('boostButton').addEventListener('click', () => { $('boostModal').hidden = false; $('closeModal').focus(); });
+  $('closeModal').addEventListener('click', () => $('boostModal').hidden = true);
+  $('boostModal').addEventListener('click', event => { if (event.target === $('boostModal')) $('boostModal').hidden = true; });
+"""
+if boost_wiring not in js:
+    raise SystemExit("Could not locate demo rewarded-ad handlers; review portal transformation.")
+js = js.replace(boost_wiring, "")
+js = js.replace(
+    "if (event.key === 'Escape') { $('boostModal').hidden = true; $('offlineModal').hidden = true; }",
+    "if (event.key === 'Escape') { $('offlineModal').hidden = true; }",
+)
+
 css = re.sub(r"^@import url\([^\n]+\);\s*", "", css)
 css = "body{min-height:100vh}\n" + css
 css = css.replace(".bottom-grid{display:grid;grid-template-columns:1fr 1fr;", ".bottom-grid{display:grid;grid-template-columns:1fr;")
 
 if re.search(r"https?://", html + css + js):
     raise SystemExit("Unexpected external URL remains in clean package source; review before publishing.")
-if "serviceWorker.register" in js or "nap5k.com" in html or "12167433" in html:
-    raise SystemExit("Live advertising or service-worker registration remains in clean package.")
+if any(token in html + js for token in ("monetag", "adsbygoogle.js", "nap5k.com", "12167433", "boostButton", "boostModal", "serviceWorker.register")):
+    raise SystemExit("Ad integration or site-specific worker remains in clean package.")
 
-readme = """Neon Miner — HTML5 portal package\n\nThis is a clean, ad-free build for portal review. It excludes Monetag, visible ad placeholders, remote font/CDN calls, and the site's service worker. No CrazyGames, Poki, Newgrounds, or GameDistribution SDK has been added.\n\nEntry point: index.html (archive root).\nLanguage: French.\nControls: click/tap.\nProgress: local browser storage; no account or cross-device sync.\n"""
+readme = """Neon Miner — HTML5 portal package
+
+This clean build excludes Monetag, Google AdSense, visible ad placeholders, remote font/CDN calls, and the website service worker. It includes local progress saves, 12-hour capped offline earnings, bulk purchases, prestige, optional synthesized audio, and JSON save import/export. No CrazyGames, Poki, Newgrounds, or GameDistribution SDK is included; each portal integration and submission must follow that portal's current instructions.
+
+Entry point: index.html (archive root).
+Language: French.
+Controls: click/tap; keyboard focus is supported.
+Progress: local browser storage; no account or cross-device sync.
+"""
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(OUTPUT, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
     archive.writestr("index.html", html)

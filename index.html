@@ -73,6 +73,16 @@
       </section>
 
       <div class="section-head"><div><p class="eyebrow"><span class="eyebrow-line"></span> DÉVELOPPEMENT</p><h2>Optimise ta ferme</h2></div><span class="live-tag"><span></span> EN DIRECT</span></div>
+      <nav class="purchase-controls" aria-label="Quantité d’achat">
+        <span class="purchase-label">ACHAT PAR LOT</span>
+        <div class="purchase-modes">
+          <button type="button" data-buy-mode="1" aria-pressed="true">×1</button>
+          <button type="button" data-buy-mode="10" aria-pressed="false">×10</button>
+          <button type="button" data-buy-mode="100" aria-pressed="false">×100</button>
+          <button type="button" data-buy-mode="max" aria-pressed="false">MAX</button>
+        </div>
+        <span id="buyModeLabel" class="purchase-hint">Acheter par lots de 1</span>
+      </nav>
       <section class="upgrade-list" id="upgradeList" aria-label="Améliorations"></section>
 
       <section class="bottom-grid">
@@ -91,11 +101,19 @@
         </article>
       </section>
 
+      <section class="utility-card save-card" aria-labelledby="saveHeading">
+        <div class="card-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> PORTABILITÉ</p><h3 id="saveHeading">Sauvegarde de progression</h3></div><span class="utility-icon">⇧</span></div>
+        <p class="utility-copy">Exporte ta sauvegarde en JSON pour la conserver ou la transférer. L’import remplace la progression locale après confirmation.</p>
+        <div class="save-actions"><button id="exportButton" class="secondary-button" type="button">↓ <span>EXPORTER JSON</span></button><button id="importButton" class="secondary-button" type="button">↑ <span>IMPORTER JSON</span></button></div>
+        <input id="importFile" class="sr-only" type="file" accept="application/json,.json" aria-label="Choisir un fichier de sauvegarde Neon Miner">
+      </section>
+
       <section class="ad-slot" aria-label="Emplacement publicitaire"><span class="ad-spark">✳</span><span>EMPLACEMENT PUBLICITAIRE</span><span class="ad-rule"></span><small>Votre annonce pourrait apparaître ici</small></section>
-      <footer class="footer"><span>NEON MINER <span class="footer-dim">/ V 1.0</span></span><span>PROGRÈS SAUVEGARDÉ LOCALEMENT <button id="resetButton" class="reset-link" type="button">RÉINITIALISER</button></span></footer>
+      <footer class="footer"><span>NEON MINER <span class="footer-dim">/ V 1.1</span></span><span>PROGRÈS SAUVEGARDÉ LOCALEMENT <button id="resetButton" class="reset-link" type="button">RÉINITIALISER</button></span></footer>
     </main>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="boostModal" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><span class="modal-icon">ϟ</span><p class="eyebrow">CONTENU SPONSORISÉ</p><h2 id="modalTitle">Emplacement publicitaire prêt</h2><p>Branchez un fournisseur de publicités récompensées pour activer ce bonus. En mode démo, la pub ne sera pas simulée.</p><button id="closeModal" class="secondary-button" type="button">COMPRIS</button></div></div>
+  <div id="offlineModal" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="offlineTitle"><span class="modal-icon">◈</span><p class="eyebrow">RETOUR DU RÉSEAU</p><h2 id="offlineTitle">Ta ferme a continué</h2><p id="offlineSummary">Crédits générés pendant ton absence.</p><button id="closeOfflineModal" class="secondary-button" type="button">RÉCUPÉRER MES CRÉDITS</button></div></div>
 </body>
 </html>

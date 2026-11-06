@@ -1,36 +1,35 @@
 # Neon Miner
 
-Un jeu idle/clicker de navigateur, mobile-first, conçu en HTML, CSS et JavaScript vanilla. Tailwind CSS est chargé par CDN pour les utilitaires de mise en page; les styles du jeu et ses mécaniques restent dans des fichiers lisibles, sans compilation ni dépendance serveur.
+Un jeu idle/clicker cyberpunk de navigateur, mobile-first, conçu en HTML, CSS et JavaScript vanilla. Le site direct charge des services externes (polices, Tailwind, AdSense et Monetag); le moteur du jeu et ses sauvegardes sont gérés dans des fichiers locaux sans framework.
 
 ## Jouer en local
 
-Ouvrez `index.html` dans un navigateur récent connecté à Internet (le CDN Tailwind et les polices Web sont chargés à distance). Pour servir localement, lancez `python3 -m http.server 8000` dans ce dossier, puis ouvrez `http://localhost:8000`.
+Ouvrez `index.html` dans un navigateur récent connecté à Internet. Pour servir le projet localement, lancez `python3 -m http.server 8000` dans ce dossier, puis ouvrez `http://localhost:8000`.
 
 ## Publier gratuitement sur GitHub Pages
 
-Le dépôt public de ce projet est `Toshi703/toshi703.github.io`. Pour publier le site, ouvrez **Settings → Pages** et choisissez sous **Build and deployment** la branche `main` et le dossier `/(root)`, puis cliquez sur **Save**. L’adresse du site utilisateur est [https://toshi703.github.io/](https://toshi703.github.io/).
+Le dépôt public est `Toshi703/toshi703.github.io`. Dans **Settings → Pages**, la source doit être la branche `main` et le dossier `/(root)`. L’adresse du site est [https://toshi703.github.io/](https://toshi703.github.io/).
 
-## Jouabilité
+## Mécaniques
 
-Cliquez sur **Miner des crédits** pour obtenir une ressource immédiate. Achetez les six infrastructures; chaque achat augmente la production passive et son prix progresse. Le reboot quantique devient disponible après un million de crédits cumulés : il remet à zéro crédits et améliorations, ajoute des fragments permanents et augmente les gains futurs de 10 % par niveau. La génération hors ligne est plafonnée à huit heures.
+Cliquez ou touchez **Miner des crédits**, puis achetez six types d’infrastructures pour faire croître la production passive. Les boutons ×1, ×10, ×100 et MAX achètent plusieurs unités d’un coup avec un calcul géométrique en temps constant. Chaque générateur double sa propre production quand il atteint 25, 50, 100 puis 250 unités.
 
-La progression est sauvegardée dans le stockage local du navigateur toutes les cinq secondes, à la fermeture de l’onglet et lors des changements d’onglet. Les sauvegardes restent sur cet appareil/navigateur et ne sont pas synchronisées entre appareils.
+Le reboot quantique reste la boucle de prestige : les fragments gagnés dépendent de la progression du cycle selon `floor(sqrt(crédits cumulés / 1 000 000))`. Le reboot conserve les fragments déjà obtenus, remet les crédits et infrastructures du cycle à zéro, puis augmente la production permanente de 10 % par fragment.
+
+La production hors ligne est accordée au chargement et plafonnée à 12 heures. Une fenêtre récapitule la durée et les crédits gagnés. Les effets sonores sont synthétisés par Web Audio, désactivés par défaut et activables depuis l’icône sonore. Les sauvegardes restent locales au navigateur; les boutons d’export/import permettent de transférer un fichier JSON manuellement entre appareils.
+
+Les anciennes sauvegardes `neonMinerSaveV1` sont migrées automatiquement. L’import remplace la sauvegarde locale après confirmation. Pour éviter les pertes, exportez une copie avant un import ou une réinitialisation.
 
 ## Publicité et distributions
 
-Le site direct charge le tag Monetag In-Page Push (zone `12167433`). Le bouton de boost « publicité récompensée » reste un placeholder : aucune récompense n’est accordée après visionnage d’une pub. `ads.txt` est encore un modèle, pas une entrée d’éditeur Monetag vérifiée.
+Le site direct contient le chargeur Google AdSense du compte indiqué, ainsi qu’une zone Monetag In-Page Push. Le chargeur AdSense seul ne crée pas de bloc display; aucune unité `data-ad-slot` n’est configurée ici. Le bouton de boost récompensé reste un placeholder et ne remet aucune récompense réelle. `ads.txt` contient la ligne éditeur fournie pour AdSense; le statut d’autorisation doit être confirmé dans le compte AdSense.
 
-`sw.js` est enregistré sur le site direct et importe le script externe `https://3nbf4.com/act/files/service-worker.min.js?r=sw`; cette dépendance n’a pas été auditée. Pour les portails qui refusent les publicités tierces ou les requêtes externes, construisez une archive propre avec `python3 scripts/build_portal_package.py`. Cette archive retire Monetag, les CDN/polices externes et le service worker; elle n’inclut pas le SDK d’un portail particulier.
+`sw.js` est enregistré sur le site direct et importe un script externe (`3nbf4.com`) qui n’a pas été audité. Pour fabriquer un paquet sans publicité tierce ni appels réseau externes, lancez `python3 scripts/build_portal_package.py`. Le ZIP nettoyé enlève les tags publicitaires, les encarts publicitaires visibles, les CDN/polices et le service worker. Il ne contient pas de SDK Poki, CrazyGames ou autre portail; vérifiez les règles et instructions d’intégration du portail avant toute soumission.
 
-Les métadonnées de partage, le JSON-LD, `robots.txt` et `sitemap.xml` améliorent la description technique du site, mais ne garantissent ni indexation ni résultats enrichis.
+## Fichiers principaux
 
-## Fichiers
-
-- `index.html` — structure de page et composants.
+- `index.html` — structure et composants d’interface.
 - `styles.css` — thème, responsive design et animations.
-- `game.js` — boucle de jeu, améliorations, prestige et persistance.
-- `og-image.jpg` — visuel optimisé pour les cartes de partage.
-- `robots.txt` et `sitemap.xml` — fichiers simples pour l’exploration du site.
-- `sw.js` — service worker du site direct; importe un script tiers.
-- `ads.txt` — modèle à compléter si un réseau publicitaire est utilisé.
-- `scripts/build_portal_package.py` — fabrique le ZIP propre pour portails compatibles; sans SDK portail.
+- `game.js` — progression, améliorations, prestige, sauvegardes, sons et import/export.
+- `scripts/build_portal_package.py` — construit le ZIP propre pour une intégration portail ultérieure.
+- `ads.txt` — vendeur AdSense déclaré.
