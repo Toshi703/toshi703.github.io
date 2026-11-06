@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#090b12">
-  <meta name="description" content="Mine des crédits, automatise ton empire numérique et recommence plus puissant dans Neon Miner.">
+  <meta name="description" content="Mine des crédits, active des circuits de surcharge, remplis des contrats et améliore ton empire numérique dans Neon Miner.">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9479603502419364"
      crossorigin="anonymous"></script>
   <meta name="monetag" content="829aa94d0995388a690a8bca3415e679">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Neon Miner">
   <meta property="og:title" content="Neon Miner — jeu idle & clicker cyberpunk">
-  <meta property="og:description" content="Mine des crédits, développe ta ferme numérique et déclenche un reboot quantique dans ce jeu incrémental gratuit jouable sur navigateur.">
+  <meta property="og:description" content="Mine, choisis tes circuits de surcharge, remplis des contrats et développe une ferme numérique persistante dans ce jeu incrémental gratuit.">
   <meta property="og:url" content="https://toshi703.github.io/">
   <meta property="og:image" content="https://toshi703.github.io/og-image.jpg">
   <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
   <meta property="og:locale" content="fr_FR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Neon Miner — jeu idle & clicker cyberpunk">
-  <meta name="twitter:description" content="Mine des crédits, développe ta ferme numérique et déclenche un reboot quantique. Jouable gratuitement sur navigateur.">
+  <meta name="twitter:description" content="Active des circuits de surcharge, remplis des contrats et développe ton empire numérique. Jouable gratuitement sur navigateur.">
   <meta name="twitter:image" content="https://toshi703.github.io/og-image.jpg">
   <script type="application/ld+json">
     {
@@ -72,6 +72,25 @@
         <div class="tap-stat"><span>SESSION DE MINAGE</span><span><b id="clicks">0</b> IMPULSIONS</span></div>
       </section>
 
+      <section class="systems-panel" aria-labelledby="systemsHeading">
+        <div class="systems-heading">
+          <div><p class="eyebrow"><span class="eyebrow-line"></span> CONTRÔLE DU RÉSEAU</p><h2 id="systemsHeading">Opérations &amp; circuits</h2></div>
+          <div class="data-wallet"><span>DONNÉES</span><strong id="signalData" aria-live="polite">0</strong><span class="data-glyph">◇</span></div>
+        </div>
+        <p class="systems-intro">Chaque circuit s’ouvre dès qu’un de ses générateurs est en service. Déclenche un burst de 12 secondes, puis réclame des contrats pour financer les recherches persistantes. La chaleur est partagée : à 100 %, les circuits se verrouillent jusqu’à 40 %. Tes crédits restent toujours intacts.</p>
+        <div class="heat-panel" aria-label="Température du cœur de réseau">
+          <div class="heat-heading"><span><i class="heat-dot"></i> TEMPÉRATURE DU CŒUR</span><strong id="heatStatus">CŒUR THERMIQUE STABLE</strong><b id="coreHeat">0%</b></div>
+          <div class="heat-track"><div id="coreHeatFill" class="heat-fill"></div></div>
+        </div>
+        <div id="circuitList" class="circuit-grid" aria-label="Circuits de surcharge"></div>
+
+        <div class="systems-subhead"><div><p class="eyebrow"><span class="eyebrow-line"></span> OBJECTIFS COURTS</p><h3>Contrats du réseau</h3></div><span class="systems-note">Sans échéance · choisis ton rythme</span></div>
+        <div id="contractList" class="contract-grid" aria-label="Contrats disponibles"></div>
+
+        <div class="systems-subhead research-subhead"><div><p class="eyebrow"><span class="eyebrow-line"></span> PROGRESSION PERSISTANTE</p><h3>Laboratoire de données</h3></div><span class="systems-note">La recherche survit au reboot</span></div>
+        <div id="researchList" class="research-grid" aria-label="Améliorations de recherche"></div>
+      </section>
+
       <div class="section-head"><div><p class="eyebrow"><span class="eyebrow-line"></span> DÉVELOPPEMENT</p><h2>Optimise ta ferme</h2></div><span class="live-tag"><span></span> EN DIRECT</span></div>
       <nav class="purchase-controls" aria-label="Quantité d’achat">
         <span class="purchase-label">ACHAT PAR LOT</span>
@@ -109,7 +128,7 @@
       </section>
 
       <section class="ad-slot" aria-label="Emplacement publicitaire"><span class="ad-spark">✳</span><span>EMPLACEMENT PUBLICITAIRE</span><span class="ad-rule"></span><small>Votre annonce pourrait apparaître ici</small></section>
-      <footer class="footer"><span>NEON MINER <span class="footer-dim">/ V 1.1</span></span><span>PROGRÈS SAUVEGARDÉ LOCALEMENT <button id="resetButton" class="reset-link" type="button">RÉINITIALISER</button></span></footer>
+      <footer class="footer"><span>NEON MINER <span class="footer-dim">/ V 2.0</span></span><span>PROGRÈS SAUVEGARDÉ LOCALEMENT <button id="resetButton" class="reset-link" type="button">RÉINITIALISER</button></span></footer>
     </main>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
